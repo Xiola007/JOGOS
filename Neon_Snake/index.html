@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Snake — Arcade</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="start-screen" class="screen">
+    <h1 class="arcade-title">NEON SNAKE</h1>
+    <p class="subtitle">ARCADE RETRO EDITION</p>
+    <section class="panel instructions">
+      <h2>ESCOLHA O MODO</h2>
+      <p><b class="p1">1 JOGADOR:</b> WASD ou setas do teclado.</p>
+      <p><b class="p2">2 JOGADORES:</b> J1 usa WASD; J2 usa as setas.</p>
+      <p>Maçã: +10 pontos e aumenta a cobrinha.</p>
+      <p>No celular, toque nas setas na parte inferior da tela para virar.</p>
+      <p>Estrela: +50 pontos bônus.</p>
+      <p>No modo de 2 jogadores, se um morrer, o outro continua. Ganha quem fizer mais pontos!</p>
+    </section>
+    <div class="mode-buttons">
+      <button class="main-btn" onclick="startGame('solo')">▶ JOGAR SOZINHO</button>
+      <button class="main-btn two-player-btn" onclick="startGame('duo')">▶ JOGAR COM 2</button>
+    </div>
+  </div>
+
+  <header class="hud">
+    <div class="score p1" id="player1-hud">J1: <span id="score1">0</span><small id="status1">VIVO</small></div>
+    <div class="score p2" id="player2-hud">J2: <span id="score2">0</span><small id="status2">VIVO</small></div>
+    <button id="pause-btn" class="pause-btn" onclick="togglePause()" aria-label="Pausar">Ⅱ</button>
+  </header>
+
+  <main class="game-area">
+    <canvas id="game-canvas" width="400" height="400"></canvas>
+    <div id="pause-overlay" class="overlay hidden">
+      <h2>PAUSADO</h2>
+      <button class="main-btn" onclick="togglePause()">CONTINUAR</button>
+    </div>
+    <div id="gameover-screen" class="overlay hidden">
+      <h2 id="result-title">FIM DE JOGO</h2>
+      <p id="result-message"></p>
+      <div class="result-scores">
+        <p class="p1">JOGADOR 1: <span id="final-score1">0</span></p>
+        <p class="p2" id="final-player2-row">JOGADOR 2: <span id="final-score2">0</span></p>
+      </div>
+      <button class="main-btn" onclick="startGame(currentMode)">JOGAR NOVAMENTE</button>
+      <button class="secondary-btn" onclick="backToMenu()">VOLTAR AO MENU</button>
+    </div>
+  </main>
+
+  <div class="mobile-controls">
+    <div id="mobile-player1">
+      <b class="p1">J1 — WASD / SETAS</b>
+      <div class="pad">
+        <button onclick="setDirection(0,'UP')">▲</button>
+        <button onclick="setDirection(0,'LEFT')">◀</button>
+        <button onclick="setDirection(0,'DOWN')">▼</button>
+        <button onclick="setDirection(0,'RIGHT')">▶</button>
+      </div>
+    </div>
+    <div id="mobile-player2">
+      <b class="p2">J2 — SETAS</b>
+      <div class="pad">
+        <button onclick="setDirection(1,'UP')">▲</button>
+        <button onclick="setDirection(1,'LEFT')">◀</button>
+        <button onclick="setDirection(1,'DOWN')">▼</button>
+        <button onclick="setDirection(1,'RIGHT')">▶</button>
+      </div>
+    </div>
+  </div>
+  <p class="footer-help">ESPAÇO ou P: PAUSAR</p>
+  <script src="script.js"></script>
+</body>
+</html>
