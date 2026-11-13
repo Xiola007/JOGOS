@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Snake.io Arena</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <!-- Arquivo CSS Externo -->
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        arcade: ['"Press Start 2P"', 'monospace'],
+                        vt323: ['VT323', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-screen w-screen relative overflow-hidden flex flex-col justify-between">
+
+    <!-- START MENU SCREEN -->
+    <div id="start-screen" class="absolute inset-0 bg-gray-950/95 z-50 flex flex-col items-center justify-center p-6 text-center">
+        <h1 class="font-arcade text-4xl md:text-7xl text-purple-400 neon-glow mb-4">SNAKE.IO</h1>
+        <p class="text-2xl text-cyan-300 font-vt323 tracking-widest mb-6">ARENA NEON</p>
+        
+        <div class="retro-box p-5 rounded-xl max-w-md w-full mb-6 text-left space-y-3">
+            <div>
+                <label class="block text-purple-300 text-xl mb-1">DIGITE SEU NOME:</label>
+                <input type="text" id="player-name-input" value="Windows99" maxlength="12" class="w-full bg-gray-900 border-2 border-purple-500 rounded px-4 py-2 text-2xl text-white outline-none focus:border-cyan-400">
+            </div>
+            <div class="text-gray-300 text-xl">
+                <p class="text-cyan-400 font-bold mb-1"><i class="fa-solid fa-gamepad mr-1"></i> Controls:</p>
+                <ul class="list-disc list-inside space-y-1 font-vt323 text-2xl">
+                    <li><strong class="text-yellow-400">Solo:</strong> Mouse/teclado ou controles na tela (celular).</li>
+                    <li><strong class="text-yellow-400">Co-op (Tela dividida):</strong> P1 (WASD) | P2 (Setas)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button onclick="startIoGame('solo')" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-arcade text-lg rounded-xl shadow-2xl transform hover:scale-105 transition border-2 border-purple-300 cursor-pointer">
+                <i class="fa-solid fa-user mr-2"></i> MODO SOLO
+            </button>
+            <button onclick="startIoGame('coop')" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-arcade text-lg rounded-xl shadow-2xl transform hover:scale-105 transition border-2 border-cyan-300 cursor-pointer">
+                <i class="fa-solid fa-user-group mr-2"></i> MODO CO-OP (SPLIT)
+            </button>
+        </div>
+        <div class="skin-picker">
+          <label for="player-skin-select">ESCOLHA A SUA SKIN:</label>
+          <select id="player-skin-select">
+            <option value="#a855f7">🟣 Roxo Neon</option>
+            <option value="#06b6d4">🩵 Ciano Cyberpunk</option>
+            <option value="#84cc16">🟢 Verde Limão</option>
+            <option value="#f97316">🟠 Laranja Fogo</option>
+            <option value="#ec4899">🩷 Rosa Choque</option>
+            <option value="rainbow">🌈 Arco-Íris</option>
+          </select>
+        </div>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="gameover-screen" class="absolute inset-0 bg-gray-950/95 z-50 hidden flex flex-col items-center justify-center p-6 text-center">
+        <h1 class="font-arcade text-5xl md:text-7xl text-red-500 mb-4 animate-bounce">WIPED OUT!</h1>
+        <div class="retro-box p-6 rounded-xl max-w-sm w-full mb-8 text-2xl space-y-2">
+            <div>FINAL SCORE: <span id="final-score" class="text-purple-400 font-bold">0</span></div>
+            <div>RESULTADO: <span id="final-length" class="text-yellow-400 font-bold">0</span></div>
+        </div>
+        <button onclick="backToMenu()" class="px-8 py-4 bg-purple-600 hover:bg-purple-500 text-white font-arcade text-xl rounded-xl shadow-lg cursor-pointer">
+            <i class="fa-solid fa-rotate-right mr-2"></i> MENU PRINCIPAL
+        </button>
+    </div>
+
+    <!-- TOP HUD & LEADERBOARD -->
+    <div class="absolute top-4 left-4 z-20 flex gap-4 pointer-events-none">
+        <div class="retro-box px-4 py-2 rounded-xl text-xl tracking-wider">
+            <span id="hud-score" class="text-purple-400 font-bold text-2xl">0</span>
+        </div>
+    </div>
+
+    <div class="absolute top-4 right-4 z-20 retro-box p-4 rounded-xl w-56 hidden md:block pointer-events-none">
+        <div class="text-cyan-400 text-xl font-bold mb-2 border-b border-purple-500/40 pb-1 flex items-center"><i class="fa-solid fa-trophy mr-2"></i> LEADERBOARD</div>
+        <div id="leaderboard-list" class="space-y-1 text-lg font-vt323">
+            <!-- Populated via JS -->
+        </div>
+    </div>
+
+    <!-- MAIN GAME CANVAS -->
+    <canvas id="io-canvas" class="absolute inset-0 w-full h-full block bg-gray-950 cursor-crosshair"></canvas>
+
+    <!-- MINIMAP CONTAINER -->
+    <div class="absolute bottom-4 left-4 z-20 retro-box p-2 rounded-xl w-36 h-36 hidden md:flex items-center justify-center overflow-hidden">
+        <canvas id="minimap-canvas" width="130" height="130" class="rounded bg-gray-900"></canvas>
+    </div>
+
+    <!-- CONTROLES DE TOQUE PARA CELULAR -->    <div id="touch-controls" class="touch-controls hidden">      <div class="touch-player" id="touch-p1">        <span>JOGADOR 1</span>        <div class="touch-pad">          <button data-touch-player="1" data-touch-direction="up">▲</button>          <button data-touch-player="1" data-touch-direction="left">◀</button>          <button data-touch-player="1" data-touch-direction="down">▼</button>          <button data-touch-player="1" data-touch-direction="right">▶</button>        </div>        <button class="touch-boost" id="touch-boost1">BOOST</button>      </div>      <div class="touch-player" id="touch-p2">        <span>JOGADOR 2</span>        <div class="touch-pad">          <button data-touch-player="2" data-touch-direction="up">▲</button>          <button data-touch-player="2" data-touch-direction="left">◀</button>          <button data-touch-player="2" data-touch-direction="down">▼</button>          <button data-touch-player="2" data-touch-direction="right">▶</button>        </div>        <button class="touch-boost" id="touch-boost2">BOOST</button>      </div>    </div>
+    <!-- MOBILE BOOST BUTTON (Solo) -->
+    <div class="absolute bottom-6 right-6 z-25 md:hidden">
+        <button id="boost-btn" class="w-20 h-20 bg-purple-600/80 active:bg-purple-500 border-4 border-purple-300 rounded-full text-white font-bold text-xl shadow-2xl flex items-center justify-center">
+            BOOST
+        </button>
+    </div>
+    
+
+
+    <!-- Arquivo JavaScript Externo -->
+    <script src="jogo.js"></script>
+</body>
+</html>
