@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b18">
+  <title>Snake Arcade — Escolha seu jogo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 28px 18px;
+      display: grid; place-items: center;
+      color: #f8fafc; background: radial-gradient(circle at top, #25204b, #090b18 58%);
+      font-family: system-ui, sans-serif;
+    }
+    main { width: min(900px, 100%); text-align: center; }
+    h1 { margin: 0; font-size: clamp(2rem, 7vw, 4rem); color: #c4b5fd; }
+    .intro { color: #cbd5e1; font-size: 1.1rem; margin: 12px 0 30px; }
+    .games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .game {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 26px 20px; border: 1px solid #7564bd; border-radius: 18px;
+      background: #17152b; box-shadow: 0 12px 35px #0006;
+    }
+    .game h2 { margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); }
+    .game p { margin: 0; min-height: 54px; color: #cbd5e1; }
+    a {
+      display: inline-block; padding: 13px 20px; border-radius: 10px;
+      color: #0b1020; background: #a78bfa; text-decoration: none; font-weight: 800;
+    }
+    a:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+    .blue a { background: #67e8f9; }
+    footer { color: #94a3b8; margin-top: 28px; font-size: .95rem; }
+    @media (max-width: 620px) {
+      .games { grid-template-columns: 1fr; }
+      .game p { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>JOGOS QUE EU GIREI</h1>
+    <p class="intro">Dois jogos, um só projeto. Escolha qual deseja jogar.</p>
+    <section class="games">
+      <article class="game">
+        <h2>🐍 Neon Snake</h2>
+        <p>Jogo clássico de cobrinha. Jogue sozinho ou em dupla, no teclado ou pelos controles de toque.</p>
+        <a href="./Neon_Snake/index.html">ABRIR NEON SNAKE</a>
+      </article>
+      <article class="game blue">
+        <h2>⚡ Snake.io Arena</h2>
+        <p>Arena neon com modo Solo e Co-op, movimentação por teclado, mouse e controles de toque.</p>
+        <a href="./Snake_IO_Arena/index.html">ABRIR SNAKE.IO ARENA</a>
+      </article>
+    </section>
+    <footer>Compatível com computador e celular. No celular, abra pelo navegador.</footer>
+  </main>
+</body>
+</html>
